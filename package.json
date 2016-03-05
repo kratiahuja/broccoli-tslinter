@@ -1,0 +1,30 @@
+{
+  "name": "broccoli-tslinter",
+  "version": "0.0.1",
+  "description": "Broccoli plugin for linting typescript files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kratiahuja/broccoli-tslinter.git"
+  },
+  "keywords": [
+    "broccoli-plugin",
+    "tslint",
+    "linter",
+    "typescript"
+  ],
+  "author": "Krati Ahuja",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kratiahuja/broccoli-tslinter/issues"
+  },
+  "homepage": "https://github.com/kratiahuja/broccoli-tslinter#readme",
+  "dependencies": {
+    "broccoli-filter": "^1.2.3",
+    "typescript": "^1.8.7",
+    "tslint": "^3.5.0"
+  }
+}
