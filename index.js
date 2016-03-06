@@ -87,7 +87,7 @@ TSLint.prototype.build = function () {
 
     if (self.options.outputFile) {
       // write to file
-      var outputPath = path.join(__dirname, self.options.outputFile);
+      var outputPath = path.join(self.options.outputFile);
       fs.writeFileSync(outputPath, outputLog, 'utf8');
       console.log(self.createLogMessage('Lint output written to file: ' + outputPath, 'blue'));
     } else {
