@@ -20,7 +20,7 @@ var node = new TSLint(someNode);
 
 ## Documentation
 
-### `new new TSLint(someNode, options)`
+### `new TSLint(someNode, options)`
 
 ---
 
