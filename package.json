@@ -14,7 +14,8 @@
     "broccoli-plugin",
     "tslint",
     "linter",
-    "typescript"
+    "typescript",
+    "ts"
   ],
   "author": "Krati Ahuja",
   "license": "MIT",
