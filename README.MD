@@ -55,6 +55,7 @@ A human-readable description for this plugin instance.
 Default: **undefined**
 
 ## Contributing
+Update the version in package.json
 
 ```javascript
 npm install
