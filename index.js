@@ -23,9 +23,9 @@ function TSLint(inputNode, options) {
   this.failureCount = 0;
   this._errors = [];
 
-  var tslintConfigPath = path.resolve(__dirname, 'tslint.json');
+  var tslintConfigPath = path.resolve('tslint.json');
   if (options.configuration) {
-    tslintConfigPath = path.resolve(__dirname, options.configuration);
+    tslintConfigPath = path.resolve(options.configuration);
   } else {
     console.log(this.createLogMessage('Using tslint.json as the default file for linting rules', 'blue'));
   }

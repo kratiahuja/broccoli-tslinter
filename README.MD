@@ -26,7 +26,7 @@ var node = new TSLint(someNode);
 
 `options.configuration` *{String}*
 
-Specify the relative path for the lint configuration file containing all the rules described [here](https://github.com/palantir/tslint#core-rules)
+Specify the path for the lint configuration file containing all the rules described [here](https://github.com/palantir/tslint#core-rules)
 
 Default: **uses the file tslint.json (in the root directory of your project)**
 
