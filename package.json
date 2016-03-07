@@ -1,6 +1,6 @@
 {
   "name": "broccoli-tslinter",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Broccoli plugin for linting typescript files.",
   "main": "index.js",
   "scripts": {

@@ -93,7 +93,7 @@ TSLint.prototype.build = function () {
     } else {
       // throw in stdout
       console.log(outputLog);
-      if (self.options.failBuild) {
+      if (self.options.failBuild && self.failureCount > 0) {
         throw new Error('Build failed due to lint errors!');
       }
     }
