@@ -1,6 +1,6 @@
 # Broccoli TSLinter [![npm version](https://badge.fury.io/js/broccoli-tslinter.svg)](https://badge.fury.io/js/broccoli-tslinter)
 
-Broccoli plugin for linting typescript files
+Broccoli plugin for linting typescript files. Uses [tslint](https://github.com/palantir/tslint) to lint the files.
 
 ## Installation
 
