@@ -48,6 +48,28 @@ Default: **false**
 
 ---
 
+`options.disableTestGenerator` *{true|false}*
+
+Disable generating tests for each file linted
+
+Default: **false**
+
+---
+
+`options.testGenerator` *{Function}*
+
+The function used to generate test modules. You can provide a custom function for your client side testing framework of choice.
+
+The function receives the following arguments:
+
+* `relativePath` - The relative path to the file being tested.
+* `passed` - If the linting passed (true/false)
+* `errors` - A generated string of errors found.
+
+Default generates QUnit style tests.
+
+---
+
 `options.annotation` *{String}*
 
 A human-readable description for this plugin instance.

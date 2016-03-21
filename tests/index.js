@@ -3,10 +3,15 @@ var assert = require('chai').assert;
 var TSLint = require('..');
 var broccoli = require('broccoli');
 var existsSync = require('exists-sync');
+var fs = require('fs');
 
 var builder;
 describe('broccoli-tslinter', function() {
   var loggerOutput;
+
+  function readFile(path) {
+    return fs.readFileSync(path, {encoding: 'utf8'});
+  }
 
   beforeEach(function() {
     loggerOutput = [];
@@ -87,6 +92,55 @@ describe('broccoli-tslinter', function() {
     });
   });
 
+  it('tests should be generated if files result in lint error', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      }
+    });
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(results) {
+      var dir = results.directory;
+      var testGenerated = readFile(dir + '/errorFile1.tslint.ts');
+      assert.notEqual(testGenerated.indexOf("QUnit.test(\'errorFile1.ts should pass jshint\'"), -1, 'Test should be generated');
+      assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
+    });
+  });
+
+  it('tests should not be generated if disableTestGenerator is set', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      },
+      disableTestGenerator: true
+    });
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(results) {
+      var dir = results.directory;
+      var testGenerated = readFile(dir + '/errorFile1.tslint.ts');
+      assert.equal(testGenerated.indexOf("QUnit.test(\'errorFile1.ts should pass jshint\'"), -1, 'Test should not be generated');
+      assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
+    });
+  });
+
+  it('custom test generator function is set', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      },
+      testGenerator: function(relativePath, passed, errors) {
+        return 'FOO IS GENERATED'
+      }
+    });
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(results) {
+      var dir = results.directory;
+      var testGenerated = readFile(dir + '/errorFile1.tslint.ts');
+      assert.notEqual(testGenerated.indexOf("FOO IS GENERATED"), -1, 'Test should not be generated');
+      assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
+    });
+  });
+
   it('providing custom configuration file should lint files', function() {
     var node = new TSLint('./tests/fixtures/errorFiles', {
       logError: function(message) {
@@ -115,7 +169,6 @@ describe('broccoli-tslinter', function() {
   });
 
   it('should throw an error when failBuild option is passed for error files', function() {
-
     var node = new TSLint('./tests/fixtures/errorFiles', {
       logError: function(message) {
         loggerOutput.push(message)
