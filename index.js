@@ -21,9 +21,6 @@ function TSLint(inputNode, options) {
     testGenerator: options.testGenerator || null,
     logError: options.logError
   };
-  this.totalFiles = 0;
-  this.failureCount = 0;
-  this._errors = [];
 
   var tslintConfigPath = path.resolve('tslint.json');
   if (options.configuration) {
@@ -71,6 +68,10 @@ TSLint.prototype.extensions = ['ts'];
 TSLint.prototype.targetExtension = 'tslint.ts';
 
 TSLint.prototype.build = function () {
+  this.totalFiles = 0;
+  this.failureCount = 0;
+  this._errors = [];
+
   var self = this;
 
   return Filter.prototype.build.call(this)

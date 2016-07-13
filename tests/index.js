@@ -92,6 +92,23 @@ describe('broccoli-tslinter', function() {
     });
   });
 
+  it('linting errors should be the same on subsequent runs', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      }
+    });
+    builder = new broccoli.Builder(node);
+
+    return builder.build().then(function() {
+      var errorsAfterFirstRun = loggerOutput.length;
+
+      return builder.build().then(function() {
+        assert.equal(loggerOutput.length, errorsAfterFirstRun, 'Error count should be the same on subsequent runs');
+      });
+    });
+  });
+
   it('tests should be generated if files result in lint error', function() {
     var node = new TSLint('./tests/fixtures/errorFiles', {
       logError: function(message) {
