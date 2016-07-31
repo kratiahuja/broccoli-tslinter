@@ -109,8 +109,8 @@ TSLint.prototype.processString = function(content, relativePath) {
 
   this.totalFiles++;
 
-  var isLintNotPassed = result.failureCount > 0;
-  if (isLintNotPassed > 0) {
+  var passed = result.failureCount === 0;
+  if (!passed) {
     // error is seen
     this.failureCount += result.failureCount;
 
@@ -121,12 +121,12 @@ TSLint.prototype.processString = function(content, relativePath) {
 
   var output = '';
   if (!this.options.disableTestGenerator) {
-    output = this.testGenerator(relativePath, isLintNotPassed, result.output)
+    output = this.testGenerator(relativePath, passed, result.output)
   }
 
   return {
     output: output,
-    didPass: isLintNotPassed,
+    didPass: passed,
     errors: result.output
   }
 };
@@ -142,10 +142,10 @@ TSLint.prototype.testGenerator = function(relativePath, passed, errors) {
     return this.options.testGenerator.call(this, relativePath, passed, errors);
   } else {
     return "" +
-      "QUnit.module('JSHint - " + path.dirname(relativePath) + "');\n" +
-      "QUnit.test('" + relativePath + " should pass jshint', function(assert) { \n" +
+      "QUnit.module('TSLint - " + path.dirname(relativePath) + "');\n" +
+      "QUnit.test('" + relativePath + " should pass tslint', function(assert) { \n" +
       "  assert.expect(1);\n" +
-      "  assert.ok(" + !!passed + ", '" + relativePath + " should pass jshint." + errors + "'); \n" +
+      "  assert.ok(" + !!passed + ", '" + relativePath + " should pass tslint." + errors + "'); \n" +
       "});\n";
   }
 };
