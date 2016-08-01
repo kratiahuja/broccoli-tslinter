@@ -119,12 +119,12 @@ describe('broccoli-tslinter', function() {
     return builder.build().then(function(results) {
       var dir = results.directory;
       var testGenerated = readFile(dir + '/errorFile1.tslint.ts');
-      assert.notEqual(testGenerated.indexOf("QUnit.test(\'errorFile1.ts should pass jshint\'"), -1, 'Test should be generated');
+      assert.notEqual(testGenerated.indexOf("QUnit.test(\'errorFile1.ts should pass tslint\'"), -1, 'Test should be generated');
       assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
     });
   });
 
-  it('tests should not be generated if disableTestGenerator is set', function() {
+  it('tests should not be generated when disableTestGenerator is true', function() {
     var node = new TSLint('./tests/fixtures/errorFiles', {
       logError: function(message) {
         loggerOutput.push(message);
@@ -135,7 +135,24 @@ describe('broccoli-tslinter', function() {
     return builder.build().then(function(results) {
       var dir = results.directory;
       var testGenerated = readFile(dir + '/errorFile1.tslint.ts');
-      assert.equal(testGenerated.indexOf("QUnit.test(\'errorFile1.ts should pass jshint\'"), -1, 'Test should not be generated');
+      assert.equal(testGenerated.indexOf("QUnit.test(\'errorFile1.ts should pass tslint\'"), -1, 'Test should not be generated');
+      assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
+    });
+  });
+
+  it('tests should be generated when disableTestGenerator is false', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      },
+      disableTestGenerator: false
+    });
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function(results) {
+      var dir = results.directory;
+      var testGenerated = readFile(dir + '/errorFile2.tslint.ts');
+      assert.notEqual(testGenerated.indexOf("QUnit.test(\'errorFile2.ts should pass tslint\'"), -1, 'Test should be generated');
+      assert.notEqual(testGenerated.indexOf("assert.ok(false, \'errorFile2.ts should pass tslint"), -1, 'Generated test should not pass');
       assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
     });
   });
