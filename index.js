@@ -2,7 +2,7 @@ var Filter = require('broccoli-persistent-filter');
 var chalk = require('chalk');
 var existsSync = require('exists-sync');
 var path = require('path');
-var Linter = require("tslint");
+var Linter = require("tslint").Linter;
 var fs = require('fs');
 
 function TSLint(inputNode, options) {
@@ -11,10 +11,8 @@ function TSLint(inputNode, options) {
   }
   options = options || {};
 
+  this.configuration = { rules: {} };
   this.options = {
-    configuration: {
-      rules: {}
-    },
     outputFile: options.outputFile,
     failBuild: options.failBuild || false,
     disableTestGenerator: options.disableTestGenerator || false,
@@ -34,19 +32,19 @@ function TSLint(inputNode, options) {
   }
 
   try {
-    this.options.configuration = JSON.parse(fs.readFileSync(tslintConfigPath, 'utf8'));
+    this.configuration = JSON.parse(fs.readFileSync(tslintConfigPath, 'utf8'));
   } catch (e) {
     var message = 'Cannot parse configuration file: ' + tslintConfigPath;
     throw new Error(this.createLogMessage(message, 'red'));
   }
 
-  if (!this.options.configuration.rules) {
+  if (!this.configuration.rules) {
     // rules need to be defined in the configuration
     var message = 'The format of the config file is { rules: { /* rules list */ } }, where /* rules list */ is a key: value comma-seperated list of rulename: rule-options pairs.';
     throw new Error(this.createLogMessage(message, 'red'));
   }
 
-  if (Object.keys(this.options.configuration.rules).length === 0) {
+  if (Object.keys(this.configuration.rules).length === 0) {
     var message = 'No rules defined for linting';
     console.log(this.createLogMessage(message, 'yellow'));
   }
@@ -104,8 +102,9 @@ TSLint.prototype.build = function () {
 }
 
 TSLint.prototype.processString = function(content, relativePath) {
-  var linter = new Linter(relativePath, content, this.options);
-  var result = linter.lint();
+  var linter = new Linter(this.options);
+  linter.lint(relativePath, content, this.configuration);
+  var result = linter.getResult();
 
   this.totalFiles++;
 
