@@ -38,17 +38,6 @@ function TSLint(inputNode, options) {
     throw new Error(this.createLogMessage(message, 'red'));
   }
 
-  if (!this.configuration.rules) {
-    // rules need to be defined in the configuration
-    var message = 'The format of the config file is { rules: { /* rules list */ } }, where /* rules list */ is a key: value comma-seperated list of rulename: rule-options pairs.';
-    throw new Error(this.createLogMessage(message, 'red'));
-  }
-
-  if (Object.keys(this.configuration.rules).length === 0) {
-    var message = 'No rules defined for linting';
-    console.log(this.createLogMessage(message, 'yellow'));
-  }
-
   if (!options.formatter) {
     // default formatter
     this.options.formatter = 'prose';
