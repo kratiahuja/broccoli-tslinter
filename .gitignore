@@ -1,4 +1,5 @@
 node_modules/
 npm-debug.log
 tmp/
+yarn.lock
 tests/fixtures/output.txt

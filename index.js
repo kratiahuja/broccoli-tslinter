@@ -2,7 +2,8 @@ var Filter = require('broccoli-persistent-filter');
 var chalk = require('chalk');
 var existsSync = require('exists-sync');
 var path = require('path');
-var Linter = require("tslint").Linter;
+var Linter = require('tslint').Linter;
+var Configuration = require('tslint').Configuration;
 var fs = require('fs');
 
 function TSLint(inputNode, options) {
@@ -11,7 +12,6 @@ function TSLint(inputNode, options) {
   }
   options = options || {};
 
-  this.configuration = { rules: {} };
   this.options = {
     outputFile: options.outputFile,
     failBuild: options.failBuild || false,
@@ -20,22 +20,15 @@ function TSLint(inputNode, options) {
     logError: options.logError
   };
 
-  var tslintConfigPath = path.resolve('tslint.json');
+  this.tslintConfigPath = 'tslint.json';
   if (options.configuration) {
-    tslintConfigPath = path.resolve(options.configuration);
+    this.tslintConfigPath = options.configuration;
   } else {
     console.log(this.createLogMessage('Using tslint.json as the default file for linting rules', 'blue'));
   }
 
-  if (!existsSync(tslintConfigPath)) {
+  if (!existsSync(this.tslintConfigPath)) {
     throw new Error('Cannot find tslint configuration file: ' + tslintConfigPath);
-  }
-
-  try {
-    this.configuration = JSON.parse(fs.readFileSync(tslintConfigPath, 'utf8'));
-  } catch (e) {
-    var message = 'Cannot parse configuration file: ' + tslintConfigPath;
-    throw new Error(this.createLogMessage(message, 'red'));
   }
 
   if (!options.formatter) {
@@ -92,7 +85,8 @@ TSLint.prototype.build = function () {
 
 TSLint.prototype.processString = function(content, relativePath) {
   var linter = new Linter(this.options);
-  linter.lint(relativePath, content, this.configuration);
+  var configLoad = Configuration.findConfiguration(this.tslintConfigPath, relativePath);
+  linter.lint(relativePath, content, configLoad.results);
   var result = linter.getResult();
 
   this.totalFiles++;
