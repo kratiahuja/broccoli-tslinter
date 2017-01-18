@@ -38,36 +38,6 @@ describe('broccoli-tslinter', function() {
     assert.throws(willThrow);
   });
 
-  it('should throw error during parsing of configuration file', function() {
-    var willThrow = function() {
-      var node = new TSLint('./tests/fixtures/errorFiles', {
-        logError: function(message) {
-          loggerOutput.push(message)
-        },
-        configuration: './tests/fixtures/lintConfig/parse-error.json'
-      });
-      builder = new broccoli.Builder(node);
-      return builder.build();
-    };
-
-    assert.throws(willThrow);
-  });
-
-  it('should throw error when configuration file does not follow format', function() {
-    var willThrow = function() {
-      var node = new TSLint('./tests/fixtures/errorFiles', {
-        logError: function(message) {
-          loggerOutput.push(message)
-        },
-        configuration: './tests/fixtures/lintConfig/incorrect-format.json'
-      });
-      builder = new broccoli.Builder(node);
-      return builder.build();
-    };
-
-    assert.throws(willThrow);
-  });
-
   it('linting correct file should result in no lint errors', function() {
     var node = new TSLint('./tests/fixtures/lintedFiles', {
       logError: function(message) {
@@ -85,6 +55,19 @@ describe('broccoli-tslinter', function() {
       logError: function(message) {
         loggerOutput.push(message);
       }
+    });
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function() {
+      assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
+    });
+  });
+
+  it('linting error files with extends format should result in lint errors', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      },
+      configuration: './tests/fixtures/lintConfig/extends-format.json'
     });
     builder = new broccoli.Builder(node);
     return builder.build().then(function() {
