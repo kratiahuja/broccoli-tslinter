@@ -36,7 +36,7 @@ Default: **uses the file tslint.json (in the root directory of your project)**
 
 Specify the path of the file where the detailed linting results will be present.
 
-Default: **undefined**
+Default: **lint-test.js**
 
 ---
 
