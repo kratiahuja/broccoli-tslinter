@@ -45,7 +45,7 @@ TSLint.prototype = Object.create(Filter.prototype);
 TSLint.prototype.constructor = TSLint;
 // only touch typescript files
 TSLint.prototype.extensions = ['ts'];
-TSLint.prototype.targetExtension = 'tslint.ts';
+TSLint.prototype.targetExtension = 'lint-test.js';
 
 TSLint.prototype.build = function () {
   this.totalFiles = 0;
