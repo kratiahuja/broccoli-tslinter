@@ -1,4 +1,5 @@
 'use strict';
+
 var assert = require('chai').assert;
 var TSLint = require('..');
 var broccoli = require('broccoli');
