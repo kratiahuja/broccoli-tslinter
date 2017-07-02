@@ -49,7 +49,7 @@ TSLint.prototype.targetExtension = 'lint-test.js';
 
 TSLint.prototype.build = function () {
   this.totalFiles = 0;
-  this.failureCount = 0;
+  this.errorCount = 0;
   this._errors = [];
 
   var self = this;
@@ -57,9 +57,9 @@ TSLint.prototype.build = function () {
   return Filter.prototype.build.call(this)
   .finally(function() {
     var outputLog = '';
-    if (self.failureCount > 0) {
+    if (self.errorCount > 0) {
       // linting error in ts files
-      var message = '======= Found ' + self.failureCount + ' tslint errors in ' + self.totalFiles + ' files =======';
+      var message = '======= Found ' + self.errorCount + ' tslint errors in ' + self.totalFiles + ' files =======';
       var summaryMessage = self.createLogMessage(message, 'yellow');
       self.logError(summaryMessage);
       outputLog += '\n' + self._errors.join('\n');
@@ -76,7 +76,7 @@ TSLint.prototype.build = function () {
     } else {
       // throw in stdout
       console.log(outputLog);
-      if (self.options.failBuild && self.failureCount > 0) {
+      if (self.options.failBuild && self.errorCount > 0) {
         throw new Error('Build failed due to lint errors!');
       }
     }
@@ -91,10 +91,10 @@ TSLint.prototype.processString = function(content, relativePath) {
 
   this.totalFiles++;
 
-  var passed = result.failureCount === 0;
+  var passed = result.errorCount === 0;
   if (!passed) {
     // error is seen
-    this.failureCount += result.failureCount;
+    this.errorCount += result.errorCount;
 
     result.output.split('\n').forEach(function (line) {
       this.logError(line);
