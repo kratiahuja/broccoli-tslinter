@@ -100,8 +100,8 @@ describe('broccoli-tslinter', function() {
       }
     });
     builder = new broccoli.Builder(node);
-    return builder.build().then(function(results) {
-      var dir = results.directory;
+    return builder.build().then(function() {
+      var dir = builder.outputPath;
       var testGenerated = readFile(dir + '/errorFile1.lint-test.js');
       assert.notEqual(testGenerated.indexOf("QUnit.test(\'errorFile1.ts should pass tslint\'"), -1, 'Test should be generated');
       assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
@@ -116,8 +116,8 @@ describe('broccoli-tslinter', function() {
       disableTestGenerator: true
     });
     builder = new broccoli.Builder(node);
-    return builder.build().then(function(results) {
-      var dir = results.directory;
+    return builder.build().then(function() {
+      var dir = builder.outputPath;
       var testGenerated = readFile(dir + '/errorFile1.lint-test.js');
       assert.equal(testGenerated.indexOf("QUnit.test(\'errorFile1.ts should pass tslint\'"), -1, 'Test should not be generated');
       assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
@@ -132,8 +132,8 @@ describe('broccoli-tslinter', function() {
       disableTestGenerator: false
     });
     builder = new broccoli.Builder(node);
-    return builder.build().then(function(results) {
-      var dir = results.directory;
+    return builder.build().then(function() {
+      var dir = builder.outputPath;
       var testGenerated = readFile(dir + '/errorFile2.lint-test.js');
       assert.notEqual(testGenerated.indexOf("QUnit.test(\'errorFile2.ts should pass tslint\'"), -1, 'Test should be generated');
       assert.notEqual(testGenerated.indexOf("assert.ok(false, \'errorFile2.ts should pass tslint"), -1, 'Generated test should not pass');
@@ -152,7 +152,7 @@ describe('broccoli-tslinter', function() {
     });
     builder = new broccoli.Builder(node);
     return builder.build().then(function(results) {
-      var dir = results.directory;
+      var dir = builder.outputPath;
       var testGenerated = readFile(dir + '/errorFile1.lint-test.js');
       assert.notEqual(testGenerated.indexOf("FOO IS GENERATED"), -1, 'Test should not be generated');
       assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
@@ -195,7 +195,7 @@ describe('broccoli-tslinter', function() {
     });
     builder = new broccoli.Builder(node);
     return builder.build().then(function() {}, function(error) {
-      assert.equal(error.toString(), 'Error: Build failed due to lint errors!');
+      assert.include(error.toString(), 'BuildError: Build failed due to lint errors!');
     })
   });
 

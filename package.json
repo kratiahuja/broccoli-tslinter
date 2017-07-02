@@ -25,13 +25,13 @@
   "homepage": "https://github.com/kratiahuja/broccoli-tslinter#readme",
   "dependencies": {
     "broccoli-persistent-filter": "^1.2.0",
-    "chalk": "^1.1.1",
-    "exists-sync": "0.0.3"
+    "chalk": "^2.0.1",
+    "exists-sync": "0.0.4"
   },
   "devDependencies": {
-    "broccoli": "0.16.9",
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5",
+    "broccoli": "1.1.2",
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
     "typescript": "^2.1.0",
     "tslint": "^5.0.0"
   },
