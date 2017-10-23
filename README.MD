@@ -58,7 +58,7 @@ Default: **false**
 
 ---
 
-`options.testGenerator` *{Function}*
+`options.testGenerator` *{Function|String}*
 
 The function used to generate test modules. You can provide a custom function for your client side testing framework of choice.
 
@@ -67,6 +67,8 @@ The function receives the following arguments:
 * `relativePath` - The relative path to the file being tested.
 * `passed` - If the linting passed (true/false)
 * `errors` - A generated string of errors found.
+
+You can also provide a string to use one of the predefined test generators. Currently  `qunit` and `mocha` are supported.
 
 Default generates QUnit style tests.
 

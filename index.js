@@ -5,6 +5,7 @@ var path = require('path');
 var Linter = require('tslint').Linter;
 var Configuration = require('tslint').Configuration;
 var fs = require('fs');
+var testGenerators = require('aot-test-generators');
 
 function TSLint(inputNode, options) {
   if (!(this instanceof TSLint)) {
@@ -120,15 +121,14 @@ TSLint.prototype.testGenerator = function(relativePath, passed, errors) {
     errors = '';
   }
 
-  if (this.options.testGenerator) {
+  if (typeof this.options.testGenerator === 'function') {
     return this.options.testGenerator.call(this, relativePath, passed, errors);
   } else {
-    return "" +
-      "QUnit.module('TSLint - " + path.dirname(relativePath) + "');\n" +
-      "QUnit.test('" + relativePath + " should pass tslint', function(assert) { \n" +
-      "  assert.expect(1);\n" +
-      "  assert.ok(" + !!passed + ", '" + relativePath + " should pass tslint." + errors + "'); \n" +
-      "});\n";
+    var generatorName = this.options.testGenerator || 'qunit';
+    var output = testGenerators[generatorName].suiteHeader('TSLint - ' + path.dirname(relativePath));
+    output += testGenerators[generatorName].test(relativePath + ' should pass tslint', !!passed, relativePath + ' should pass tslint.' + errors);
+
+    return output;
   }
 };
 
