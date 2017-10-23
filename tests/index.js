@@ -108,6 +108,22 @@ describe('broccoli-tslinter', function() {
     });
   });
 
+  it('mocha tests should be generated when mocha is provided as the testGenerator', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      },
+      testGenerator: 'mocha'
+    });
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function() {
+      var dir = builder.outputPath;
+      var testGenerated = readFile(dir + '/errorFile1.lint-test.js');
+      assert.notEqual(testGenerated.indexOf("it('errorFile1.ts should pass tslint', function() {"), -1, 'Mocha test should be generated');
+      assert.notEqual(loggerOutput.length, 0, 'Errors should be seen for linted files');
+    });
+  });
+
   it('tests should not be generated when disableTestGenerator is true', function() {
     var node = new TSLint('./tests/fixtures/errorFiles', {
       logError: function(message) {
