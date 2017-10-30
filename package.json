@@ -30,7 +30,7 @@
     "exists-sync": "0.0.4"
   },
   "devDependencies": {
-    "broccoli": "1.1.3",
+    "broccoli": "1.1.4",
     "chai": "^4.0.2",
     "mocha": "^4.0.0",
     "tslint": "^5.0.0",
