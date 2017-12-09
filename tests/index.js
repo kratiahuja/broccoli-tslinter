@@ -263,7 +263,7 @@ describe('broccoli-tslinter', function() {
   }));
 
   it('should lint output to a file if output file is provided', co.wrap(function *() {
-    var outputFilePath = './tests/fixtures/output.txt';
+    var outputFilePath = './tests/output.txt';
 
     input.write({
       'a.ts': 'var Xx = "abcd"; '
