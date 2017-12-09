@@ -29,7 +29,7 @@ function TSLint(inputNode, options) {
   }
 
   if (!existsSync(this.tslintConfigPath)) {
-    throw new Error('Cannot find tslint configuration file: ' + tslintConfigPath);
+    throw new Error('Cannot find tslint configuration file: ' + this.tslintConfigPath);
   }
 
   if (!options.formatter) {

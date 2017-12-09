@@ -31,7 +31,10 @@
   },
   "devDependencies": {
     "broccoli": "1.1.4",
+    "broccoli-test-helper": "^1.2.0",
     "chai": "^4.0.2",
+    "chai-as-promised": "^7.1.1",
+    "co": "^4.6.0",
     "mocha": "^4.0.0",
     "tslint": "^5.0.0",
     "typescript": "^2.1.0"
