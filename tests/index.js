@@ -63,6 +63,18 @@ describe('broccoli-tslinter', function() {
     });
   });
 
+  it('linting errors should contain violated rule name', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      }
+    });
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function() {
+      assert.include(loggerOutput.join('\n'), '(no-trailing-whitespace)', 'Rule name should be reported');
+    });
+  });
+
   it('linting error files with extends format should result in lint errors', function() {
     var node = new TSLint('./tests/fixtures/errorFiles', {
       logError: function(message) {

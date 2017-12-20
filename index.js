@@ -93,24 +93,30 @@ TSLint.prototype.processString = function(content, relativePath) {
   this.totalFiles++;
 
   var passed = result.errorCount === 0;
+  var errors = [];
   if (!passed) {
     // error is seen
     this.errorCount += result.errorCount;
 
-    result.output.split('\n').forEach(function (line) {
-      this.logError(line);
-    }, this);
+    errors = result.failures.map((failure) => {
+      var position = failure.startPosition.lineAndCharacter;
+      var line = position.line + 1;
+      var character = position.character + 1;
+      return `${failure.ruleSeverity.toUpperCase()}: ${failure.fileName}[${line}, ${character}]: ${failure.failure} (${failure.ruleName})`;
+    });
+
+    errors.forEach((line) => this.logError(line));
   }
 
   var output = '';
   if (!this.options.disableTestGenerator) {
-    output = this.testGenerator(relativePath, passed, result.output)
+    output = this.testGenerator(relativePath, passed, errors.join('\n'))
   }
 
   return {
     output: output,
     didPass: passed,
-    errors: result.output
+    errors: errors.join('\n')
   }
 };
 
