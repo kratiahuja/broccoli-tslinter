@@ -133,6 +133,7 @@ TSLint.prototype.testGenerator = function(relativePath, passed, errors) {
     var generatorName = this.options.testGenerator || 'qunit';
     var output = testGenerators[generatorName].suiteHeader('TSLint - ' + path.dirname(relativePath));
     output += testGenerators[generatorName].test(relativePath + ' should pass tslint', !!passed, relativePath + ' should pass tslint.' + errors);
+    output += testGenerators[generatorName].suiteFooter();
 
     return output;
   }
