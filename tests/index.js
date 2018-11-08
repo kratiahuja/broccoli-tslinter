@@ -136,6 +136,22 @@ describe('broccoli-tslinter', function() {
     });
   });
 
+  it('generated test error messages should not be doubly escaped', function() {
+    var node = new TSLint('./tests/fixtures/errorFiles', {
+      logError: function(message) {
+        loggerOutput.push(message);
+      }
+    });
+    builder = new broccoli.Builder(node);
+    return builder.build().then(function() {
+      var dir = builder.outputPath;
+      var testGenerated = readFile(dir + '/errorFile2.lint-test.js');
+      assert.notInclude(testGenerated, "\\\\' should be", 'Single quotes are not doubly escaped');
+      assert.notInclude(testGenerated, "should be \\\"", 'Double quotes are not doubly escaped');
+      assert.notInclude(testGenerated, "\\\\n", 'Newlines are not doubly escaped');
+    });
+  });
+
   it('tests should not be generated when disableTestGenerator is true', function() {
     var node = new TSLint('./tests/fixtures/errorFiles', {
       logError: function(message) {
