@@ -122,7 +122,7 @@ TSLint.prototype.processString = function(content, relativePath) {
 
 TSLint.prototype.testGenerator = function(relativePath, passed, errors) {
   if (errors) {
-    errors = '\\n' + this.escapeErrorString(errors);
+    errors = '\n' + errors;
   } else {
     errors = '';
   }
@@ -137,13 +137,6 @@ TSLint.prototype.testGenerator = function(relativePath, passed, errors) {
 
     return output;
   }
-};
-
-TSLint.prototype.escapeErrorString = function(string) {
-  string = string.replace(/\n/gi, "\\n");
-  string = string.replace(/'/gi, "\\'");
-
-  return string;
 };
 
 TSLint.prototype.createLogMessage = function(message, color) {
