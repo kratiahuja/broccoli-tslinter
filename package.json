@@ -25,7 +25,7 @@
   "homepage": "https://github.com/kratiahuja/broccoli-tslinter#readme",
   "dependencies": {
     "aot-test-generators": "^0.1.0",
-    "broccoli-persistent-filter": "^1.2.0",
+    "broccoli-persistent-filter": "^2.2.1",
     "chalk": "^2.0.1",
     "exists-sync": "0.0.4"
   },
